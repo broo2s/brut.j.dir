@@ -82,7 +82,7 @@ public class FileDirectory extends AbstractDirectory {
     }
     
     private String generatePath(String name) {
-        return getDir().getPath() + File.separator + name;
+        return getDir().getPath() + separator + name;
     }
 
     private void loadAll() {

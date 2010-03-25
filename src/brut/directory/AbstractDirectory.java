@@ -46,7 +46,7 @@ public abstract class AbstractDirectory implements Directory {
         Set<String> files = new LinkedHashSet<String>(mFiles);
         for (Map.Entry<String, ? extends Directory> dir : getAbstractDirs().entrySet()) {
             for (String path : dir.getValue().getFiles(true)) {
-                files.add(dir.getKey() + File.separatorChar + path);
+                files.add(dir.getKey() + separator + path);
             }
         }
         return files;
@@ -194,7 +194,7 @@ public abstract class AbstractDirectory implements Directory {
         for (Map.Entry<String, AbstractDirectory> dir : getAbstractDirs().entrySet()) {
             for (Map.Entry<String, AbstractDirectory> subdir : dir.getValue().getAbstractDirs(
                     true).entrySet()) {
-                dirs.put(dir.getKey() + File.separatorChar + subdir.getKey(),
+                dirs.put(dir.getKey() + separator + subdir.getKey(),
                         subdir.getValue());
             }
         }
@@ -213,7 +213,7 @@ public abstract class AbstractDirectory implements Directory {
     }
     
     private ParsedPath parsePath(String path) {
-        int pos = path.indexOf(File.separatorChar);
+        int pos = path.indexOf(separator);
         if (pos == -1) {
             return new ParsedPath(null, path);
         }

@@ -37,4 +37,6 @@ public interface Directory {
     public Directory createDir(String path) throws DirectoryException;
     
     public boolean removeFile(String path);
+
+    public final char separator = '/';
 }
