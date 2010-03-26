@@ -17,30 +17,70 @@
 
 package brut.directory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import org.apache.commons.io.IOUtils;
+import brut.util.BrutIO;
+import java.io.*;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 public class DirUtil {
-    public static void copyFiles(Directory in, Directory out)
+    public static void copyToDir(Directory in, Directory out)
             throws DirectoryException {
         for (String fileName : in.getFiles(true)) {
-            InputStream inStream = in.getFileInput(fileName);
-            OutputStream outStream = out.getFileOutput(fileName);
-            try {
-                IOUtils.copy(inStream, outStream);
-            } catch (IOException ex) {
-                throw new DirectoryException(ex);
-            } finally {
-                try {
-                    inStream.close();
-                    outStream.close();
-                } catch (IOException ex) {}
+            copyToDir(in, out, fileName);
+        }
+    }
+
+    public static void copyToDir(Directory in, Directory out,
+            String[] fileNames) throws DirectoryException {
+        for (int i = 0; i < fileNames.length; i++) {
+            copyToDir(in, out, fileNames[i]);
+        }
+    }
+
+    public static void copyToDir(Directory in, Directory out, String fileName)
+            throws DirectoryException {
+        try {
+            if (in.containsDir(fileName)) {
+                in.getDir(fileName).copyToDir(out.createDir(fileName));
+            } else {
+                BrutIO.copyAndClose(in.getFileInput(fileName),
+                    out.getFileOutput(fileName));
             }
+        } catch (IOException ex) {
+            throw new DirectoryException(
+                "Error copying file: " + fileName, ex);
+        }
+    }
+
+    public static void copyToDir(Directory in, File out)
+            throws DirectoryException {
+        for (String fileName : in.getFiles(true)) {
+            copyToDir(in, out, fileName);
+        }
+    }
+
+    public static void copyToDir(Directory in, File out, String[] fileNames)
+            throws DirectoryException {
+        for (int i = 0; i < fileNames.length; i++) {
+            copyToDir(in, out, fileNames[i]);
+        }
+    }
+
+    public static void copyToDir(Directory in, File out, String fileName)
+            throws DirectoryException {
+        try {
+            if (in.containsDir(fileName)) {
+                in.getDir(fileName).copyToDir(new File(out, fileName));
+            } else {
+                File outFile = new File(out, fileName);
+                outFile.getParentFile().mkdirs();
+                BrutIO.copyAndClose(in.getFileInput(fileName),
+                    new FileOutputStream(outFile));
+            }
+        } catch (IOException ex) {
+            throw new DirectoryException(
+                "Error copying file: " + fileName, ex);
         }
     }
 }
