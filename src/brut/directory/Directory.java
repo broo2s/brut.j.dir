@@ -17,8 +17,7 @@
 
 package brut.directory;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,6 +36,17 @@ public interface Directory {
     public Directory createDir(String path) throws DirectoryException;
     
     public boolean removeFile(String path);
+
+    public void copyToDir(Directory out) throws DirectoryException;
+    public void copyToDir(Directory out, String[] fileNames)
+        throws DirectoryException;
+    public void copyToDir(Directory out, String fileName)
+        throws DirectoryException;
+    public void copyToDir(File out) throws DirectoryException;
+    public void copyToDir(File out, String[] fileNames)
+        throws DirectoryException;
+    public void copyToDir(File out, String fileName)
+        throws DirectoryException;
 
     public final char separator = '/';
 }

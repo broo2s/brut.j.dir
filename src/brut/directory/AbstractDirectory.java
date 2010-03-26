@@ -178,6 +178,34 @@ public abstract class AbstractDirectory implements Directory {
         return true;
     }
 
+    public void copyToDir(Directory out) throws DirectoryException {
+        DirUtil.copyToDir(out, out);
+    }
+
+    public void copyToDir(Directory out, String[] fileNames)
+            throws DirectoryException {
+        DirUtil.copyToDir(out, out, fileNames);
+    }
+
+    public void copyToDir(Directory out, String fileName)
+            throws DirectoryException {
+        DirUtil.copyToDir(out, out, fileName);
+    }
+
+    public void copyToDir(File out) throws DirectoryException {
+        DirUtil.copyToDir(this, out);
+    }
+
+    public void copyToDir(File out, String[] fileNames)
+            throws DirectoryException {
+        DirUtil.copyToDir(this, out, fileNames);
+    }
+
+    public void copyToDir(File out, String fileName)
+            throws DirectoryException {
+        DirUtil.copyToDir(this, out, fileName);
+    }
+
     protected Map<String, AbstractDirectory> getAbstractDirs() {
         return getAbstractDirs(false);
     }
