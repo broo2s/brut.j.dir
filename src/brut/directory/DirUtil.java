@@ -25,7 +25,7 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
-public class Util {
+public class DirUtil {
     public static void copyFiles(Directory in, Directory out)
             throws DirectoryException {
         for (String fileName : in.getFiles(true)) {
