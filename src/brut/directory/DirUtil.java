@@ -17,7 +17,9 @@
 
 package brut.directory;
 
+import brut.common.BrutException;
 import brut.util.BrutIO;
+import brut.util.OS;
 import java.io.*;
 
 /**
@@ -42,6 +44,7 @@ public class DirUtil {
             throws DirectoryException {
         try {
             if (in.containsDir(fileName)) {
+                // TODO: remove before copying
                 in.getDir(fileName).copyToDir(out.createDir(fileName));
             } else {
                 BrutIO.copyAndClose(in.getFileInput(fileName),
@@ -71,6 +74,7 @@ public class DirUtil {
             throws DirectoryException {
         try {
             if (in.containsDir(fileName)) {
+                OS.rmdir(new File(out, fileName));
                 in.getDir(fileName).copyToDir(new File(out, fileName));
             } else {
                 File outFile = new File(out, fileName);
@@ -79,6 +83,9 @@ public class DirUtil {
                     new FileOutputStream(outFile));
             }
         } catch (IOException ex) {
+            throw new DirectoryException(
+                "Error copying file: " + fileName, ex);
+        } catch (BrutException ex) {
             throw new DirectoryException(
                 "Error copying file: " + fileName, ex);
         }
